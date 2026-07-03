@@ -28,11 +28,20 @@ Makefile
 config.h
 config.log
 config.status
+config.guess
+config.sub
+configure
 libtool
 stamp-h1
 autom4te.cache/
 .deps/
 .libs/
+acloclal.m4
+compile
+missing
+mkinstalldirs
+install-sh
+ltmain.sh
 
 # pkg-config
 *.pc

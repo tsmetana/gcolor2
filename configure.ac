@@ -16,9 +16,9 @@ dnl 59 Temple Place, Suite 330, Boston, MA 02111-1307  USA
 
 
 AC_PREREQ([2.50])
-AC_INIT([gcolor2], [0.4])
-AM_CONFIG_HEADER([config.h])
-AM_INIT_AUTOMAKE([gcolor2], [0.4])
+AC_INIT([gcolor2], [0.5])
+AC_CONFIG_HEADERS([config.h])
+AM_INIT_AUTOMAKE([foreign])
 
 AM_MAINTAINER_MODE
 
@@ -37,7 +37,7 @@ ALL_LINGUAS=""
 AM_GLIB_GNU_GETTEXT
 
 
-pkg_modules="gtk+-2.0 >= 2.4"
+pkg_modules="gtk+-3.0"
 PKG_CHECK_MODULES(PACKAGE, [$pkg_modules])
 AC_SUBST(PACKAGE_CFLAGS)
 AC_SUBST(PACKAGE_LIBS)

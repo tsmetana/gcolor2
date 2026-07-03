@@ -9,9 +9,9 @@ bin_PROGRAMS = gcolor2
 
 gcolor2_SOURCES = \
 	main.c \
-	support.c support.h \
 	interface.c interface.h \
-	callbacks.c callbacks.h
+	callbacks.c callbacks.h \
+	support.c support.h
 
 gcolor2_LDADD = @PACKAGE_LIBS@ $(INTLLIBS)
 

@@ -6,9 +6,12 @@
 #include <stdio.h>
 
 #include "interface.h"
-#include "support.h"
 #include "callbacks.h"
+#include "support.h"
 
+GtkWidget    *gcolor2;
+GtkWidget    *menu;
+GdkColor      colorvalue;
 GtkListStore *liststore;
 GdkWindow    *gdkwin;
 gchar        *user_filename;
@@ -48,8 +51,6 @@ gchar* get_system_file ()
 
 void add_list_color (gchar *spec, gchar *name, gchar *type, gboolean is_new_color)
 {
-	GdkPixmap   *pixmap;
-	GdkBitmap   *mask;
 	GdkPixbuf   *buf;
 	GtkTreeIter  iter;
 	
@@ -74,9 +75,11 @@ void add_list_color (gchar *spec, gchar *name, gchar *type, gboolean is_new_colo
 	};
 	gchar colorline[] = ".      c #FFFFFF";
 	
-	g_sprintf (colorline, ".      c %s", spec);
+	sprintf (colorline, ".      c %s", spec);
 	swatchxpm[1] = colorline;
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 	buf = gdk_pixbuf_new_from_xpm_data ((gchar const **)swatchxpm);
+G_GNUC_END_IGNORE_DEPRECATIONS
 
 	/* setting where to insert will only take effect if user
 	   didn't sort either of the columns yet */
@@ -126,7 +129,7 @@ void add_rgb_file (gchar *filename, gchar *type)
 			lg = g;
 			lb = b;
 		}
-		g_sprintf (spec, "#%.2X%.2X%.2X", r, g, b);
+		sprintf (spec, "#%.2X%.2X%.2X", r, g, b);
 		name = g_strchomp (g_strdup (p));
 		add_list_color (spec, name, type, FALSE);
 	}
@@ -148,15 +151,12 @@ gint main (gint argc, gchar *argv[])
 	textdomain (GETTEXT_PACKAGE);
 #endif
 
-	gtk_set_locale ();
 	gtk_init (&argc, &argv);
 	
 	add_pixmap_directory (PACKAGE_DATA_DIR "/pixmaps/" PACKAGE);
 
 	gcolor2 = create_gcolor2 ();
 	gtk_widget_show (gcolor2);
-	gtk_window_set_policy (GTK_WINDOW (gcolor2), FALSE, FALSE, TRUE);
-	
 	/* setup the tree view widget */
 	liststore = gtk_list_store_new (N_COLUMNS, GDK_TYPE_PIXBUF, G_TYPE_STRING,
 	                                G_TYPE_STRING, G_TYPE_STRING);
@@ -212,7 +212,7 @@ gint main (gint argc, gchar *argv[])
 
 	/* show first before setting gdkwin */
 	gtk_widget_show (gcolor2);
-	gdkwin = GTK_WIDGET (gcolor2)->window;
+	gdkwin = gtk_widget_get_window (GTK_WIDGET (gcolor2));
 	
 	/* fill with system and user-saved values */
 	add_rgb_file (get_user_file (), USER_COLOR);

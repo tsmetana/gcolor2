@@ -41,9 +41,9 @@
                            "\302\267 Usability / user interface enhancements\n" \
                            "\302\267 Code cleanup"
 
-GtkWidget *gcolor2;
-GtkWidget *menu;
-GdkColor   colorvalue;
+extern GtkWidget *gcolor2;
+extern GtkWidget *menu;
+extern GdkColor   colorvalue;
 
 enum
 {
@@ -55,10 +55,13 @@ enum
 };
 
 gchar* get_user_file();
+gchar* get_system_file();
+void add_rgb_file (gchar *filename, gchar *type);
+void add_list_color (gchar *spec, gchar *name, gchar *type, gboolean is_new_color);
 
 void show_file_error (gchar* message);
 
-void destroy_aboutdialog (GtkObject *object, gpointer user_data);
+void destroy_aboutdialog (GtkWidget *object, gpointer user_data);
 
 void on_about_button_clicked (GtkButton *button, gpointer user_data);
 
@@ -89,7 +92,7 @@ void on_delete_button_clicked (GtkButton *button, gpointer user_data);
 
 gboolean delete_color (gchar* color_name, gchar* color_value);
 
-void on_gcolor2_destroy (GtkObject *object, gpointer user_data);
+void on_gcolor2_destroy (GtkWidget *object, gpointer user_data);
 
 void on_quit_button_clicked (GtkButton *button, gpointer user_data);
 

@@ -33,7 +33,7 @@ void show_file_error (gchar* type)
 	gtk_widget_destroy (GTK_WIDGET (d));
 }
 
-void destroy_aboutdialog (GtkObject *object, gpointer user_data)
+void destroy_aboutdialog (GtkWidget *object, gpointer user_data)
 {
 	if (aboutdialog != NULL)
 		gtk_widget_destroy(aboutdialog);
@@ -103,7 +103,9 @@ void on_about_button_clicked (GtkButton *button, gpointer user_data)
 
 void on_colorselection_color_changed (GtkColorSelection *colorselection, gpointer user_data)
 {
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 	gtk_color_selection_get_current_color (colorselection, &colorvalue);
+G_GNUC_END_IGNORE_DEPRECATIONS
 }
 
 void on_save_entry_changed (GtkEditable *editable, gpointer user_data)
@@ -137,12 +139,16 @@ void on_list_selection_changed (GtkTreeSelection *selection, gpointer user_data)
 		
 		gtk_tree_model_get (model, &selection_iter, COLOR_VALUE, &color, COLOR_TYPE, &type, -1);
 		colorsel = GTK_COLOR_SELECTION (lookup_widget (gcolor2, "colorselection"));
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 		gdk_color_parse (color, &new_color);
-		
+G_GNUC_END_IGNORE_DEPRECATIONS
+
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
 		/* save the old color in color wheel */
 		gtk_color_selection_get_current_color (colorsel, &curr_color);
 		gtk_color_selection_set_previous_color (colorsel, &curr_color);
 		gtk_color_selection_set_current_color (colorsel, &new_color);
+G_GNUC_END_IGNORE_DEPRECATIONS
 		g_free (color);
 		
 		/* if selection is a user color, enable delete button.
@@ -207,9 +213,7 @@ void on_show_system_colors_activate (GtkMenuItem *menuitem, gpointer user_data)
 
 void show_popup_menu (GtkWidget *treeview, GdkEventButton *event, gpointer user_data)
 {
-	gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL,
-	                (event != NULL ? event->button : 0),
-	                gdk_event_get_time ((GdkEvent*)event));
+	gtk_menu_popup_at_pointer (GTK_MENU (menu), (GdkEvent*)event);
 }
 
 gboolean on_treeview_button_press_event (GtkWidget *widget, GdkEventButton *event,
@@ -400,7 +404,7 @@ gboolean delete_color (gchar* color_name, gchar* color_value)
 		g = g_ascii_strtoull (p, &p, 10);
 		b = g_ascii_strtoull (p, &p, 10);
 		p += strspn (p, " \t");
-		g_sprintf (file_color_value, "#%2X%2X%2X", r, g, b);
+		sprintf (file_color_value, "#%2X%2X%2X", r, g, b);
 		file_color_name = g_strchomp (g_strdup (p));
 		
 		/* make sure to only remove the first matching color. both value and
@@ -408,7 +412,7 @@ gboolean delete_color (gchar* color_name, gchar* color_value)
 		if (found || strcmp (file_color_name, color_name) != 0 ||
 		    strcmp (g_ascii_strup (file_color_value, -1), color_value) != 0)
 		{
-			g_sprintf (newstuff, "%s%3d %3d %3d\t\t%s\n", newstuff, r, g, b, file_color_name);
+			sprintf (newstuff, "%s%3d %3d %3d\t\t%s\n", newstuff, r, g, b, file_color_name);
 		}
 		else
 		{
@@ -434,7 +438,7 @@ gboolean delete_color (gchar* color_name, gchar* color_value)
 	return FALSE;
 }
 
-void on_gcolor2_destroy (GtkObject *object, gpointer user_data)
+void on_gcolor2_destroy (GtkWidget *object, gpointer user_data)
 {
 	destroy_aboutdialog (object, user_data);
 	gtk_main_quit ();
@@ -442,7 +446,7 @@ void on_gcolor2_destroy (GtkObject *object, gpointer user_data)
 
 void on_quit_button_clicked (GtkButton *button, gpointer user_data)
 {
-	on_gcolor2_destroy (GTK_OBJECT (button), user_data);
+	on_gcolor2_destroy (GTK_WIDGET (button), user_data);
 }
 
 gchar* hex_value (GdkColor color)
