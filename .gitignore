@@ -1,0 +1,47 @@
+# C object files and binaries
+*.o
+*.so
+*.a
+*.la
+*.lo
+*.dll
+*.dylib
+
+# Executables
+gcolor2
+
+# Preprocessor output
+*.i
+*.s
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+core
+vgcore.*
+
+# Autotools generated files
+Makefile
+*/Makefile
+config.h
+config.log
+config.status
+libtool
+stamp-h1
+autom4te.cache/
+.deps/
+.libs/
+
+# pkg-config
+*.pc
+
+# Editor and IDE files
+*~
+*.swp
+*.swo
+.vscode/
+.idea/
+*.kate-swp
+\#*\#
